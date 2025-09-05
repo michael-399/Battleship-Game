@@ -1,32 +1,12 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 #include <SFML/Audio.hpp>
-#include <iostream>
 #include <vector>
-#include <filesystem>
-#include <mach-o/dyld.h>
+
 
 using namespace std;
 
-std::string getExecutablePath() {
-    char path[1024];
-    uint32_t size = sizeof(path);
-    if (_NSGetExecutablePath(path, &size) != 0) {
-        std::cerr << "Buffer too small; need size " << size << std::endl;
-        return "";
-    }
-    return std::filesystem::path(path).parent_path().string();
-}
-
-
-std::string getFontPath(const std::string& fontFileName) {
-    std::string execPath = getExecutablePath();
-    return execPath + "/resources/" + fontFileName;
-}
-
-
 bool isDraggingGlobal = false;
-bool isVertical = true;
 
 class Tile{
 public:
@@ -362,15 +342,15 @@ int main() {
     window.setFramerateLimit(30);
 
     sf::Font font;
-    if (!font.loadFromFile(getFontPath("Capture it.ttf"))) {
+    if (!font.loadFromFile("resources/Capture it.ttf")) {
         return 1;
     }
     sf::SoundBuffer buffer;
-    if(!buffer.loadFromFile(getFontPath("explosion-80108.mp3"))){
+    if(!buffer.loadFromFile("resources/explosion-80108.mp3")){
         return 2;
     }
     sf::SoundBuffer buffer2;
-    if(!buffer2.loadFromFile(getFontPath("splash.wav"))){
+    if(!buffer2.loadFromFile("resources/splash.wav")){
         return 3;
     }
     sf::Sound sound(buffer);
@@ -378,7 +358,7 @@ int main() {
     sf::Sound sound2(buffer2);
     
     sf::Music music;
-    if (!music.openFromFile(getFontPath("oceansound.mp3"))) {
+    if (!music.openFromFile("resources/oceansound.mp3")){
         return 4;
     }
     music.setLoop(true);
